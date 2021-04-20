@@ -1,0 +1,6 @@
+sceneSetups:
+- path: Assets/VacuumShaders/Mesh Materializer/Example Scenes/11. Runtime terrain
+    OBJ exporter.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0
