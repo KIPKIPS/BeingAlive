@@ -4,35 +4,131 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoSingleton<UIManager> {
-    public override void Awake() {
+    private Canvas Canvas;
 
+    public Transform CanvasTrs {
+        get {
+            if (Canvas == null) {
+                Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+            }
+
+            return Canvas.transform;
+        }
+    }
+    private Stack<BasePanel> panelStack;
+
+    public Stack<BasePanel> PanelStack {
+        get {
+            if (panelStack == null) {
+                panelStack = new Stack<BasePanel>();
+            }
+
+            return panelStack;
+        }
+    }
+    private Dictionary<int, BasePanel> basePanelDict;
+    public enum PanelId {
+        Gm = 1,
+        Demo = 2,
+    }
+    public override void Awake() {
+        AnalysisItemJsonData();
     }
     // Start is called before the first frame update
     public override void Start() {
-        AnalysisItemJsonData();
+
     }
 
     // Update is called once per frame
     public override void Update() {
-
+        if (Input.GetKeyDown(KeyCode.G)) {
+            OpenPanelById(PanelId.Gm);
+        }
+        if (Input.GetKeyDown(KeyCode.K)) {
+            OpenPanelById(PanelId.Demo);
+        }
     }
 
-    public void OpenPanelById(int id) {
-
+    public void OpenPanelById(PanelId panelId) {
+        int id = (int)panelId;
+        PanelStackPush(id);
     }
 
+    public BasePanel GetPanelById(int id) {
+        BasePanel panel;
+        BasePanelDict.TryGetValue(id, out panel);
+        if (panel != null) {
+            return panel;
+        } else {
+            // print("new");
+            string path = panelDict[id].path;
+            GameObject panelObj = Instantiate(Resources.Load<GameObject>(path), CanvasTrs);
+            panelObj.name = panelDict[id].name;
+            panel = panelObj.transform.GetComponent<BasePanel>();
+            BasePanelDict.Add(id, panel);
+            return panel;
+        }
+    }
+
+    public void PanelStackPush(int panelId) {
+        BasePanel panel = GetPanelById(panelId);
+        if (panel.IsShow) {
+            return;
+        }
+        //显示当前界面时,应该先去判断当前栈是否为空,不为空说明当前有界面显示,把当前的界面OnPause掉
+        if (PanelStack.Count > 0) {
+            PanelStack.Peek().OnPause();
+        }
+        //每次入栈(显示页面的时候),触发panel的OnEnter方法
+        panel.OnEnter();
+        PanelStack.Push(panel);
+    }
+
+    public void PanelStackPop() {
+        if (PanelStack.Count > 0) {
+            //print("栈不为空");
+            PanelStack.Pop();//.OnExit();//关闭栈顶界面
+            if (PanelStack.Count <= 0) {
+                print("栈空");
+                return;
+            } else {
+                print("last panel resume");
+                PanelStack.Peek().OnResume();//恢复原先的界面
+            }
+        } else {
+            return;
+        }
+    }
 
     //解析面板的json数据
     private List<PanelData> panelDataList;
-
     public List<PanelData> PanelDataList {
         get {
             if (panelDataList == null) {
                 AnalysisItemJsonData();
             }
             return panelDataList;
+        }
+    }
+
+    public Dictionary<int, PanelData> panelDict;
+    public Dictionary<int, PanelData> PanelDict {
+        get {
+            if (panelDict == null) {
+                panelDict = new Dictionary<int, PanelData>();
+            }
+            return panelDict;
+        }
+    }
+    public Dictionary<int, BasePanel> BasePanelDict {
+        get {
+            if (basePanelDict == null) {
+                basePanelDict = new Dictionary<int, BasePanel>();
+            }
+            return basePanelDict;
         }
     }
     public void AnalysisItemJsonData() {
@@ -47,6 +143,10 @@ public class UIManager : MonoSingleton<UIManager> {
                 PanelData panelData = new PanelData(id, path, name);
                 panelDataList.Add(panelData);
             }
+        }
+
+        foreach (PanelData panelData in panelDataList) {
+            PanelDict.Add(panelData.id, panelData);
         }
 
     }

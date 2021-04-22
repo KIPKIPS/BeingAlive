@@ -37,7 +37,6 @@ public class BuildPanelToJsonData : Editor {
             int id = panel.id;
             PanelData panelData = new PanelData(id, relativePath, item.name);
             StoragePanelData(panelData);
-
         }
 
         EditorUtility.ClearProgressBar();
