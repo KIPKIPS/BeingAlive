@@ -17,7 +17,6 @@ public class LoginPanel : BasePanel {
     private bool isPressKey = false;
     private Text freeText;
     private Transform freeTextTrs;
-    private bool isFreeTextGrow = false;
     private CanvasGroup GameName1;
     private CanvasGroup GameName2;
     private float oriX = 40;
