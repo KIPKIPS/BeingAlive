@@ -7,19 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoSingleton<UIManager> {
-    private Canvas Canvas;
-
-    public Transform CanvasTrs {
-        get {
-            if (Canvas == null) {
-                Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-            }
-
-            return Canvas.transform;
-        }
-    }
+    //数据存储域
     private Stack<BasePanel> panelStack;
-
     public Stack<BasePanel> PanelStack {
         get {
             if (panelStack == null) {
@@ -30,19 +19,84 @@ public class UIManager : MonoSingleton<UIManager> {
         }
     }
     private Dictionary<int, BasePanel> basePanelDict;
+    public Dictionary<int, BasePanel> BasePanelDict {
+        get {
+            if (basePanelDict == null) {
+                basePanelDict = new Dictionary<int, BasePanel>();
+            }
+            return basePanelDict;
+        }
+    }
+    //解析面板的json数据,PanelData列表
+    private List<PanelData> panelDataList;
+    public List<PanelData> PanelDataList {
+        get {
+            if (panelDataList == null) {
+                panelDataList = new List<PanelData>();
+            }
+            return panelDataList;
+        }
+    }
+
+    public Dictionary<int, PanelData> panelDict;
+    public Dictionary<int, PanelData> PanelDict {
+        get {
+            if (panelDict == null) {
+                panelDict = new Dictionary<int, PanelData>();
+            }
+            return panelDict;
+        }
+    }
+
+
+    //属性字段
     public enum PanelId {
         Gm = 1,
         Demo = 2,
     }
+    public enum PanelType {
+        Module = 1,
+        Pop = 2,
+        Tips = 3,
+    }
+
+    //Canvas区域
+    private Canvas moduleCanvas;
+    public Transform ModuleCanvas {
+        get {
+            if (moduleCanvas == null) {
+                moduleCanvas = GameObject.Find("ModuleCanvas").GetComponent<Canvas>();
+            }
+            return moduleCanvas.transform;
+        }
+    }
+    private Canvas popCanvas;
+    public Transform PopCanvas {
+        get {
+            if (popCanvas == null) {
+                popCanvas = GameObject.Find("PopCanvas").GetComponent<Canvas>();
+            }
+            return popCanvas.transform;
+        }
+    }
+    private Canvas tipsCanvas;
+    public Transform TipsCanvas {
+        get {
+            if (tipsCanvas == null) {
+                tipsCanvas = GameObject.Find("TipsCanvas").GetComponent<Canvas>();
+            }
+            return tipsCanvas.transform;
+        }
+    }
+
+    //方法
     public override void Awake() {
         AnalysisItemJsonData();
     }
-    // Start is called before the first frame update
     public override void Start() {
 
     }
 
-    // Update is called once per frame
     public override void Update() {
         if (Input.GetKeyDown(KeyCode.G)) {
             OpenPanelById(PanelId.Gm);
@@ -65,7 +119,7 @@ public class UIManager : MonoSingleton<UIManager> {
         } else {
             // print("new");
             string path = panelDict[id].path;
-            GameObject panelObj = Instantiate(Resources.Load<GameObject>(path), CanvasTrs);
+            GameObject panelObj = Instantiate(Resources.Load<GameObject>(path), ModuleCanvas);
             panelObj.name = panelDict[id].name;
             panel = panelObj.transform.GetComponent<BasePanel>();
             BasePanelDict.Add(id, panel);
@@ -103,36 +157,7 @@ public class UIManager : MonoSingleton<UIManager> {
         }
     }
 
-    //解析面板的json数据
-    private List<PanelData> panelDataList;
-    public List<PanelData> PanelDataList {
-        get {
-            if (panelDataList == null) {
-                AnalysisItemJsonData();
-            }
-            return panelDataList;
-        }
-    }
-
-    public Dictionary<int, PanelData> panelDict;
-    public Dictionary<int, PanelData> PanelDict {
-        get {
-            if (panelDict == null) {
-                panelDict = new Dictionary<int, PanelData>();
-            }
-            return panelDict;
-        }
-    }
-    public Dictionary<int, BasePanel> BasePanelDict {
-        get {
-            if (basePanelDict == null) {
-                basePanelDict = new Dictionary<int, BasePanel>();
-            }
-            return basePanelDict;
-        }
-    }
     public void AnalysisItemJsonData() {
-        panelDataList = new List<PanelData>();
         List<JObject> jObjList = Utils.LoadJsonByPath<List<JObject>>("Data/PanelData.json");
         if (jObjList != null) {
             foreach (JObject jObj in jObjList) {
@@ -140,12 +165,13 @@ public class UIManager : MonoSingleton<UIManager> {
                 int id = int.Parse(jObj.GetValue("id").ToString());
                 string path = jObj.GetValue("path").ToString();
                 string name = jObj.GetValue("name").ToString();
-                PanelData panelData = new PanelData(id, path, name);
-                panelDataList.Add(panelData);
+                //PanelType panelType = (PanelType)Enum.Parse(typeof(PanelType), jObj.GetValue("panelType").ToString());
+                PanelData panelData = new PanelData(id, path, name);//, panelType
+                PanelDataList.Add(panelData);
             }
         }
 
-        foreach (PanelData panelData in panelDataList) {
+        foreach (PanelData panelData in PanelDataList) {
             PanelDict.Add(panelData.id, panelData);
         }
 

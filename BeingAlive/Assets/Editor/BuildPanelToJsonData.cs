@@ -34,8 +34,9 @@ public class BuildPanelToJsonData : Editor {
                 relativePath = match.ToString().Replace("Resources/", "").Replace(".prefab", "").ToString();//获取相对路径
             }
             BasePanel panel = item.GetComponent<BasePanel>();
-            int id = panel.id;
-            PanelData panelData = new PanelData(id, relativePath, item.name);
+            int id = (int)panel.PanelId;
+            //UIManager.PanelType panelType = panel.panelType;
+            PanelData panelData = new PanelData(id, relativePath, item.name);//panelType
             StoragePanelData(panelData);
         }
 
@@ -52,6 +53,7 @@ public class BuildPanelToJsonData : Editor {
             if (data.id == panelData.id) {
                 data.name = panelData.name;
                 data.path = panelData.path;
+                //data.panelType = panelData.panelType;
                 isExist = true;
                 break;
             }

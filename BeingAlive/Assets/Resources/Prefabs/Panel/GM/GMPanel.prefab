@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d20859d9b303f94ba4c6a66aeac343d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
+  PanelId: 1
   fadeInOutTime: 0.5
   scaleTime: 0.5
   showTween: 1

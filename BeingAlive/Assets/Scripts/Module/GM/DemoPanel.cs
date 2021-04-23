@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DemoPanel : BasePanel {
     public override void Awake() {
-
+        panelType = UIManager.PanelType.Module;
         showTween = true;
         fadeInOutTime = 0.4f;
         scaleTime = 0.4f;
@@ -15,10 +15,6 @@ public class DemoPanel : BasePanel {
 
     public override void InitPanel() {
         base.InitPanel();
-        FindObj<Button>("Bg", transform, delegate () { base.OnExit(); });
-    }
-
-    public override void OnEnter() {
-        base.OnEnter();
+        FindObj<Button>("Bg", this.transform, delegate () { base.OnExit(); });
     }
 }

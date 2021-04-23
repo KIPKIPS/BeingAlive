@@ -9,7 +9,10 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class BasePanel : MonoBehaviour {
-    public int id;
+    //public int id;
+    public UIManager.PanelId PanelId;
+    [System.NonSerialized]
+    public UIManager.PanelType panelType;
     //public string path;
     protected Transform scaleTrs;
     private bool isShow = false;
@@ -35,11 +38,10 @@ public class BasePanel : MonoBehaviour {
 
     }
     public virtual void Start() {
-        InitPanel();
     }
     public virtual void InitPanel() {
         if (scaleTrs == null) {
-            scaleTrs = transform;
+            scaleTrs = this.transform;
         }
         if (showTween) {
             scaleTrs.localScale = Vector3.zero;
@@ -78,7 +80,8 @@ public class BasePanel : MonoBehaviour {
 
     //进入界面
     public virtual void OnEnter() {
-        print("on enter" + id);
+        InitPanel();
+        print("on enter" + PanelId);
         if (showTween) {
             scaleTrs.DOScale(Vector3.one, scaleTime).SetEase(Ease.InOutBack).OnComplete(() => scaleTrs.localScale = Vector3.one);
             CanvasGroup.DOFade(1, fadeInOutTime).SetEase(Ease.InOutBack).OnComplete(() => CanvasGroup.alpha = 1);
