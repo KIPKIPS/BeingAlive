@@ -23,10 +23,23 @@ public class BuildPanelToJsonData : Editor {
             Debug.LogWarning("Select Nothing");
             return;
         }
+        List<JObject> jObjList = Utils.LoadJsonByPath<List<JObject>>("Data/PanelData.json");
+        List<PanelData> dataList = new List<PanelData>();
+        if (jObjList != null) {
+            foreach (JObject jObj in jObjList) {
+                int id = int.Parse(jObj.GetValue("id").ToString());
+                string path = jObj.GetValue("path").ToString();
+                string name = jObj.GetValue("name").ToString();
+                PanelData pd = new PanelData(id, path, name);
+                dataList.Add(pd);
+                //PanelType panelType = (PanelType)Enum.Parse(typeof(PanelType), jObj.GetValue("panelType").ToString());
+            }
+        }
         foreach (GameObject item in Selection.gameObjects) {
             string path = AssetDatabase.GetAssetPath(item);
-            if (!path.EndsWith(".prefab"))
+            if (!path.EndsWith(".prefab")) {
                 return;
+            }
             //Debug.Log(path);
             string pattern = @"Resources/[\S]+/?";
             string relativePath = "";
@@ -35,39 +48,35 @@ public class BuildPanelToJsonData : Editor {
             }
             BasePanel panel = item.GetComponent<BasePanel>();
             int id = (int)panel.PanelId;
-            //UIManager.PanelType panelType = panel.panelType;
             PanelData panelData = new PanelData(id, relativePath, item.name);//panelType
-            StoragePanelData(panelData);
-        }
-
-        EditorUtility.ClearProgressBar();
-        AssetDatabase.Refresh();
-        AssetDatabase.SaveAssets();
-    }
-
-    static void StoragePanelData(PanelData panelData) {
-        //将对象转化为字符串
-        List<PanelData> list = UIManager.Instance.PanelDataList;
-        bool isExist = false;
-        foreach (PanelData data in list) {
-            if (data.id == panelData.id) {
-                data.name = panelData.name;
-                data.path = panelData.path;
-                //data.panelType = panelData.panelType;
-                isExist = true;
-                break;
+            bool isExit = false;
+            for (int i = 0; i < dataList.Count; i++) {
+                if (dataList[i].id == id) {
+                    dataList[i] = panelData;
+                    isExit = true;
+                    break;
+                }
             }
+
+            if (!isExit) {
+                dataList.Add(panelData);
+            }
+            //UIManager.PanelType panelType = panel.panelType;
+
+            // StoragePanelData(panelData);
         }
-        if (!isExist) {
-            list.Add(panelData);
-        }
+        //Debug.Log(dataList.Count);
         string filePath = Application.dataPath + "/Data" + "/PanelData.json";
-        string jsonStr = JsonConvert.SerializeObject(list);
-        //print(jsonStr);
+        string jsonStr = JsonConvert.SerializeObject(dataList);
+        //Debug.Log(jsonStr);
         //将转换过后的json字符串写入json文件
         StreamWriter writer = new StreamWriter(filePath);
         writer.Write(jsonStr);//写入文件
         writer.Close();
+        //AssetDatabase.Refresh();
+
+        EditorUtility.ClearProgressBar();
         AssetDatabase.Refresh();
+        AssetDatabase.SaveAssets();
     }
 }

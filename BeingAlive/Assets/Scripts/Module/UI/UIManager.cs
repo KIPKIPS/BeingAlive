@@ -53,6 +53,7 @@ public class UIManager : MonoSingleton<UIManager> {
     public enum PanelId {
         Gm = 1,
         Demo = 2,
+        LoginPanel = 3,
     }
     public enum PanelType {
         Module = 1,
@@ -94,16 +95,16 @@ public class UIManager : MonoSingleton<UIManager> {
         AnalysisItemJsonData();
     }
     public override void Start() {
-
+        OpenPanelById(PanelId.LoginPanel);
     }
 
     public override void Update() {
-        if (Input.GetKeyDown(KeyCode.G)) {
-            OpenPanelById(PanelId.Gm);
-        }
-        if (Input.GetKeyDown(KeyCode.K)) {
-            OpenPanelById(PanelId.Demo);
-        }
+        // if (Input.GetKeyDown(KeyCode.G)) {
+        //     OpenPanelById(PanelId.Gm);
+        // }
+        // if (Input.GetKeyDown(KeyCode.K)) {
+        //     OpenPanelById(PanelId.Demo);
+        // }
     }
 
     public void OpenPanelById(PanelId panelId) {
@@ -129,6 +130,7 @@ public class UIManager : MonoSingleton<UIManager> {
 
     public void PanelStackPush(int panelId) {
         BasePanel panel = GetPanelById(panelId);
+        print(panel.panelType);
         if (panel.IsShow) {
             return;
         }
@@ -146,10 +148,10 @@ public class UIManager : MonoSingleton<UIManager> {
             //print("栈不为空");
             PanelStack.Pop();//.OnExit();//关闭栈顶界面
             if (PanelStack.Count <= 0) {
-                print("栈空");
+                //print("栈空");
                 return;
             } else {
-                print("last panel resume");
+                //print("last panel resume");
                 PanelStack.Peek().OnResume();//恢复原先的界面
             }
         } else {

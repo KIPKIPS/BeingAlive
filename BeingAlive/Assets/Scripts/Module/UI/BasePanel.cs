@@ -81,7 +81,7 @@ public class BasePanel : MonoBehaviour {
     //进入界面
     public virtual void OnEnter() {
         InitPanel();
-        print("on enter" + PanelId);
+        //print("on enter" + PanelId);
         if (showTween) {
             scaleTrs.DOScale(Vector3.one, scaleTime).SetEase(Ease.InOutBack).OnComplete(() => scaleTrs.localScale = Vector3.one);
             CanvasGroup.DOFade(1, fadeInOutTime).SetEase(Ease.InOutBack).OnComplete(() => CanvasGroup.alpha = 1);
@@ -99,7 +99,7 @@ public class BasePanel : MonoBehaviour {
     //恢复界面
     public virtual void OnResume() {
         CanvasGroup.blocksRaycasts = true;
-        print("on resume");
+        //print("on resume");
         isShow = true;
     }
 
