@@ -5,8 +5,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using UnityEngine.Events;
 
 public class BasePanel : MonoBehaviour {
     //public int id;
@@ -63,7 +66,7 @@ public class BasePanel : MonoBehaviour {
     }
     public T FindObj<T>(string name, Transform trs) {
         Transform root = trs == null ? this.transform : trs;
-        return Utils.FindObj<T>(this.transform, name);
+        return Utils.FindObj<T>(root, name);
     }
     public T FindObj<T>(string name, Transform trs, Action func) {
         Transform root = trs == null ? this.transform : trs;
@@ -72,6 +75,45 @@ public class BasePanel : MonoBehaviour {
             (resObj as Button).onClick.AddListener(delegate () {
                 func();
             });
+        }
+        return resObj;
+    }
+    public enum EventType {
+        MouseEnter,
+        MouseExit
+    }
+    public T FindObj<T>(string name, Transform trs, UnityAction<BaseEventData> mouseEnter, UnityAction<BaseEventData> mouseExit) {
+        Transform root = trs == null ? this.transform : trs;
+        T resObj = Utils.FindObj<T>(trs, name);
+        if (typeof(T) == typeof(Button)) { //button支持绑定函数方法
+            Transform btnTrs = (resObj as Button).transform;
+            var trigger = btnTrs.gameObject.GetComponent<EventTrigger>();
+            if (trigger == null) {
+                trigger = btnTrs.gameObject.AddComponent<EventTrigger>();
+            }
+            // 实例化delegates(trigger.trigger是注册在EventTrigger组件上的所有功能)  
+            trigger.triggers = new List<EventTrigger.Entry>();
+            // 在EventSystem委托列表中进行登记  
+            EventTrigger.Entry enterEntry = new EventTrigger.Entry();
+            // 设置 事件类型  
+            enterEntry.eventID = EventTriggerType.PointerEnter;
+            // 实例化回调函数  
+            enterEntry.callback = new EventTrigger.TriggerEvent();
+            //UnityAction 本质上是delegate，且有数个泛型版本（参数最多是四个），一个UnityAction可以添加多个函数（多播委托）  
+            //将方法绑定在回调上（给回调方法添加监听）  
+            enterEntry.callback.AddListener(mouseEnter);
+            // 添加事件触发记录到GameObject的事件触发组件  
+            trigger.triggers.Add(enterEntry);
+
+            EventTrigger.Entry exitEntry = new EventTrigger.Entry();
+            // 设置 事件类型  
+            exitEntry.eventID = EventTriggerType.PointerExit;
+            // 实例化回调函数  
+            exitEntry.callback = new EventTrigger.TriggerEvent();
+            //将方法绑定在回调上（给回调方法添加监听）  
+            exitEntry.callback.AddListener(mouseExit);
+            // 添加事件触发记录到GameObject的事件触发组件  
+            trigger.triggers.Add(exitEntry);
         }
         return resObj;
     }
