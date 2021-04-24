@@ -78,10 +78,7 @@ public class BasePanel : MonoBehaviour {
         }
         return resObj;
     }
-    public enum EventType {
-        MouseEnter,
-        MouseExit
-    }
+
     public T FindObj<T>(string name, Transform trs, UnityAction<BaseEventData> mouseEnter, UnityAction<BaseEventData> mouseExit) {
         Transform root = trs == null ? this.transform : trs;
         T resObj = Utils.FindObj<T>(trs, name);

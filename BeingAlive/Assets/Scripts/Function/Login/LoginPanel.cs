@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -36,11 +37,24 @@ public class LoginPanel : BasePanel {
         for (int i = 0; i < 3; i++) {
             btnList[i] = FindObj<Button>("Button" + i, mainTrs, MouseEnter, MouseExit);
             arrowList[i] = FindObj<Transform>("Arrow", btnList[i].transform).gameObject;
+            int index = i;
+            FindObj<Button>("Button" + i, mainTrs, () => {
+                BtnClick(index);
+            });
         }
 
         // for (int i = 0; i < btnList.Length; i++) {
         //     print(btnList[i].transform.name);
         // }
+    }
+
+    private void BtnClick(int index) {
+        print(index);
+        switch (index) {
+            case 0: break;
+            case 1: break;
+            case 2: break;
+        }
     }
 
     private float offsetX = 60f;
@@ -52,22 +66,20 @@ public class LoginPanel : BasePanel {
         int index = int.Parse(data.pointerEnter.name.Replace("Button", ""));
         //print(index);
         float oriX = data.pointerEnter.transform.localPosition.x;
-        data.pointerEnter.transform.DOLocalMoveX(oriX + offsetX, 0.3f).SetEase(Ease.OutBack).OnComplete(() => {
-            for (int i = 0; i < arrowList.Length; i++) {
-                arrowList[i].SetActive(i == index && showArrow);
-            }
-        });
+        data.pointerEnter.transform.DOLocalMoveX(oriX + offsetX, 0.3f).SetEase(Ease.OutBack);
+        for (int i = 0; i < arrowList.Length; i++) {
+            arrowList[i].SetActive(i == index && showArrow);
+        }
     }
 
     private void MouseExit(BaseEventData baseData) {
         PointerEventData data = baseData as PointerEventData;
         //print(data.pointerEnter.name);
         showArrow = false;
-        data.pointerEnter.transform.DOLocalMoveX(oriX, 0.3f).OnComplete(() => {
-            for (int i = 0; i < arrowList.Length; i++) {
-                arrowList[i].SetActive(false);
-            }
-        });
+        data.pointerEnter.transform.DOLocalMoveX(oriX, 0.3f);
+        for (int i = 0; i < arrowList.Length; i++) {
+            arrowList[i].SetActive(false);
+        }
     }
 
     public override void OnEnter() {
