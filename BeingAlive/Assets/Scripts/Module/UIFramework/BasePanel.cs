@@ -24,6 +24,17 @@ public class BasePanel : MonoBehaviour {
         set { isShow = value; }
     }
 
+    private RectTransform rect;
+
+    public RectTransform Rect {
+        get {
+            if (rect == null) {
+                rect = transform.GetComponent<RectTransform>();
+            }
+            return rect;
+        }
+    }
+
     private CanvasGroup canvasGroup;
 
     public CanvasGroup CanvasGroup {
@@ -133,6 +144,9 @@ public class BasePanel : MonoBehaviour {
     public virtual void OnPause() {
         CanvasGroup.blocksRaycasts = false;//弹出新的面板时,鼠标和这个界面不再进行交互(禁用射线检测)
         isShow = false;
+        if (panelType == UIManager.PanelType.Module) {
+            Rect.anchoredPosition = new Vector2(2000, 2000);
+        }
     }
 
     //恢复界面
@@ -140,6 +154,9 @@ public class BasePanel : MonoBehaviour {
         CanvasGroup.blocksRaycasts = true;
         //print("on resume");
         isShow = true;
+        if (panelType == UIManager.PanelType.Module) {
+            Rect.anchoredPosition = new Vector2(0, 0);
+        }
     }
 
     //关闭界面
@@ -151,5 +168,9 @@ public class BasePanel : MonoBehaviour {
         CanvasGroup.blocksRaycasts = false;
         isShow = false;
         UIManager.Instance.PanelStackPop();
+    }
+
+    public string AddColor(string str, int colorIndex) {
+        return Utils.AddColor(str, colorIndex);
     }
 }

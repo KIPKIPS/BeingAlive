@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -83,5 +84,16 @@ public static class Utils {
         //字符串转换为DataSave对象
         T data = JsonConvert.DeserializeObject<T>(jsonStr);
         return data;
+    }
+
+    public static string AddColor(string str, int colorIndex) {
+        //其中ColorHelper.GetColor(color) 返回十六进制格式的颜色对象,color参数传入色码号即可,色码号在配置表可以看到
+        //返回一个类似html标签语言包装好颜色信息的字符串,Unity的Text组件可以解析此串中的颜色信息
+        return string.Format("<color={0}>{1}</color>", GetColor(colorIndex), str);
+
+    }
+    public static string GetColor(int colorIndex) {
+        return DataManager.Instance.ColorDict[colorIndex];
+        //return string.Format("#{0}", DataColor.data_get[tonumber(color)].color);
     }
 }
