@@ -92,13 +92,16 @@ public class UIManager : MonoSingleton<UIManager> {
 
     //方法
     public override void Awake() {
+        base.Awake();
         AnalysisItemJsonData();
     }
     public override void Start() {
+        base.Start();
         OpenPanelById(PanelId.LoginPanel);
     }
 
     public override void Update() {
+        base.Update();
         // if (Input.GetKeyDown(KeyCode.G)) {
         //     OpenPanelById(PanelId.Gm);
         // }
