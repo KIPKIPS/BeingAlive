@@ -132,7 +132,7 @@ public class UIManager : MonoSingleton<UIManager> {
 
     public void PanelStackPush(int panelId) {
         BasePanel panel = GetPanelById(panelId);
-        print(panel.panelType);
+        //print(panel.panelType);
         if (panel.IsShow) {
             return;
         }

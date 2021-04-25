@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: e603b0446c7f2804db0c8dd0fb5c1af0
+timeCreated: 1554432893
+licenseType: Store
+ShaderImporter:
+  defaultTextures:
+  - _Texture: {fileID: 2800000, guid: 8c67aa4b531f4c74786135793df0a695, type: 3}
+  - _Mask_Primary: {fileID: 2800000, guid: 0cbc66454a3a56244affa05554162bac, type: 3}
+  - _Mask_Secondary: {fileID: 2800000, guid: a3f6d4c76177b704299c630a6bf515f1, type: 3}
+  - _Texture_Base_Primary: {fileID: 2800000, guid: ebf19c917bd322643a829ec6095a2178,
+      type: 3}
+  - _Texture_Base_Secondary: {fileID: 2800000, guid: f65b920b34d4fc248a504cef1ed177d8,
+      type: 3}
+  - _Texture_Color_Metal_Primary: {fileID: 2800000, guid: 8c6f956b63336ae44ad322451df5a7a2,
+      type: 3}
+  - _Texture_Metal_Secondary: {fileID: 2800000, guid: 59d30079bf12f254dbd2470a093f97a6,
+      type: 3}
+  - _Texture_Color_Metal_Dark: {fileID: 2800000, guid: 91094db90fa56c74c8a1d41d52b2e566,
+      type: 3}
+  - _Texture_Hair: {fileID: 2800000, guid: 724afb924514bc14d9d8fcc045e8ed4d, type: 3}
+  - _Texture_Skin: {fileID: 2800000, guid: 9bf5625bb4be4ec4e9a0bcc009d10ab4, type: 3}
+  - _Texture_Stubble: {fileID: 2800000, guid: daa5c40d542aa5b47b3583b6285941ea, type: 3}
+  - _Texture_Scar: {fileID: 2800000, guid: 8a1bc2c7e543a3545a87c5593e1bf765, type: 3}
+  - _Texture_BodyArt: {fileID: 2800000, guid: b5c72be73bd8cad4394ec40cc22be615, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

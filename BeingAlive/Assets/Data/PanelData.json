@@ -1,22 +1,22 @@
 [
-    {
-        "id": 2,
-        "name": "DemoPanel",
-        "path": "Prefabs/Panel/GM/DemoPanel"
-    },
-    {
-        "id": 3,
-        "name": "LoginPanel",
-        "path": "Prefabs/Panel/Login/LoginPanel"
-    },
-    {
-        "id": 1,
-        "name": "GMPanel",
-        "path": "Prefabs/Panel/GM/GMPanel"
-    },
-    {
-        "id": 4,
-        "name": "CreateRolePanel",
-        "path": "Prefabs/Panel/Login/CreateRolePanel"
-    }
+  {
+    "id": 2,
+    "name": "DemoPanel",
+    "path": "Prefabs/Panel/GM/DemoPanel"
+  },
+  {
+    "id": 3,
+    "name": "LoginPanel",
+    "path": "Prefabs/Panel/Login/LoginPanel"
+  },
+  {
+    "id": 1,
+    "name": "GMPanel",
+    "path": "Prefabs/Panel/GM/GMPanel"
+  },
+  {
+    "id": 4,
+    "name": "CreateRolePanel",
+    "path": "Prefabs/Panel/Login/CreateRolePanel"
+  }
 ]
