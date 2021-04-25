@@ -9,6 +9,10 @@ public class ModuleManager : MonoSingleton<ModuleManager> {
         "DataManager",
     };
     public override void Awake() {
+        InstantiateManager();
+    }
+
+    public void InstantiateManager() {
         foreach (string managerName in initManager) {
             GameObject managerObj = new GameObject(managerName);
             //managerObj.name

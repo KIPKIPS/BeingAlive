@@ -7,6 +7,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoSingleton<UIManager> {
+    //属性字段
+    public enum PanelId {
+        Gm = 1,
+        Demo = 2,
+        LoginPanel = 3,
+        CreateRolePanel = 4,
+    }
+    public enum PanelType {
+        Module = 1,
+        Pop = 2,
+        Tips = 3,
+    }
     //数据存储域
     private Stack<BasePanel> panelStack;
     public Stack<BasePanel> PanelStack {
@@ -46,19 +58,6 @@ public class UIManager : MonoSingleton<UIManager> {
             }
             return panelDict;
         }
-    }
-
-
-    //属性字段
-    public enum PanelId {
-        Gm = 1,
-        Demo = 2,
-        LoginPanel = 3,
-    }
-    public enum PanelType {
-        Module = 1,
-        Pop = 2,
-        Tips = 3,
     }
 
     //Canvas区域

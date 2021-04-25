@@ -49,9 +49,11 @@ public class LoginPanel : BasePanel {
     }
 
     private void BtnClick(int index) {
-        print(index);
+        //print(index);
         switch (index) {
-            case 0: break;
+            case 0:
+                base.OnPause();
+                break;
             case 1: break;
             case 2: break;
         }
@@ -84,7 +86,6 @@ public class LoginPanel : BasePanel {
 
     public override void OnEnter() {
         base.OnEnter();
-
     }
 
     private float freeTextMaxScale = 1.05f;

@@ -28,6 +28,10 @@ public class DataManager : MonoSingleton<DataManager> {
 
     private Dictionary<int, string> colorDict;//十六进制的颜色字典
 
+    private string[] loadConfigTableList = {
+        "ColorData",
+    };
+
     public Dictionary<int, string> ColorDict {
         get {
             if (colorDict == null) {
@@ -38,7 +42,9 @@ public class DataManager : MonoSingleton<DataManager> {
     }
     public override void Awake() {
         base.Awake();
-        AnalysisConfigTableByName("ColorData");
+        foreach (string tabName in loadConfigTableList) {
+            AnalysisConfigTableByName(tabName);
+        }
     }
 
     public void AnalysisColorData(List<JObject> jObjList) {
