@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ModuleManager : MonoSingleton<ModuleManager> {
-    private string[] initManager = {
+    private readonly string[] initManager = {
         "UIManager",
         "DataManager",
+        "AvatarManager",
     };
     public override void Awake() {
         InstantiateManager();
