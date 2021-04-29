@@ -5,7 +5,6 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-//
 public static class Utils {
     /// <summary>
     /// 洗牌算法,传入目标列表,返回打乱顺序之后的列表,支持泛型
