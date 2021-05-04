@@ -50,7 +50,7 @@ public class AvatarManager : MonoSingleton<AvatarManager> {
             //print(lastUnderlineIndex);
             string key = smr.transform.parent.name;//name.Substring(0, lastUnderlineIndex);
             string partKey = name.Substring(lastUnderlineIndex + 1, name.Length - lastUnderlineIndex - 1);
-            print(partKey);
+            //print(partKey);
             if (!modelDict.ContainsKey(key)) {
                 modelDict.Add(key, new Dictionary<string, SkinnedMeshRenderer>());
 
@@ -62,6 +62,66 @@ public class AvatarManager : MonoSingleton<AvatarManager> {
             }
             modelDict[key].Add(key + "_" + partKey, smr);//存储所有的skm信息
             //print(key);
+        }
+        RandomChange();
+    }
+    //随机更换
+    void RandomChange() {
+        Hashtable ignorePart = new Hashtable();
+        if (Random.Range(0, 2) % 2 == 0) { //有面罩的话就不显示Head,Eyebrows,FacialHair,会穿模
+            ignorePart.Add("Male_Head_All_Elements", true);
+            ignorePart.Add("Male_01_Eyebrows", true);
+            ignorePart.Add("Male_02_FacialHair", true);
+        } else {
+            ignorePart.Add("Male_Head_No_Elements", true);
+        }
+        foreach (KeyValuePair<string, SkinnedMeshRenderer> kvp in entitySKMDict) {
+            //print(kvp.Key);
+            SkinnedMeshRenderer skm = kvp.Value;
+            if (ignorePart.ContainsKey(kvp.Key)) {
+                skm.gameObject.SetActive(false);
+                continue;
+            }
+            skm.gameObject.SetActive(true);
+            Dictionary<string, SkinnedMeshRenderer> partSkmDict = modelDict[kvp.Key];
+            int num = Random.Range(0, partSkmDict.Count);
+
+            //print(num);
+            string key = kvp.Key + "_" + (num < 10 ? ("0" + num) : num.ToString());
+            //print(partSkmDict[key]);
+            if (!partSkmDict.ContainsKey(key)) {
+                num++;
+                key = kvp.Key + "_" + (num < 10 ? ("0" + num) : num.ToString());
+            }
+            ReplaceSMRData(skm, partSkmDict[key]);
+            // skm.sharedMesh = randomPartSkm.sharedMesh;
+        }
+    }
+
+    //更换smr组件的bones,material,mesh
+    void ReplaceSMRData(SkinnedMeshRenderer modelSMR, SkinnedMeshRenderer target) {
+        List<Transform> bones = new List<Transform>();
+        foreach (Transform trs in target.bones) {
+            foreach (var bone in modelHips) {
+                if (trs.name == bone.name) {
+                    //print(trs.name);
+                    bones.Add(bone);
+                    break;
+                }
+            }
+        }
+        // foreach (Transform trs in modelHips) {
+        //     print(trs.name);
+        // }
+        modelSMR.bones = bones.ToArray();
+        modelSMR.materials = target.materials;
+        modelSMR.sharedMesh = target.sharedMesh;
+    }
+
+    public override void Update() {
+        base.Update();
+        if (Input.GetMouseButtonDown(0)) {
+            RandomChange();
         }
     }
 }
