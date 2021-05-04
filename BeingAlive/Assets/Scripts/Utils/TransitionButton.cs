@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class TransitionButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     private Vector3 originScale = new Vector3(1, 1, 1);
-    private bool isstart = false;
+    private bool isStart = false;
 
     // 是否缩放
     public bool scaleSetting = true;
@@ -20,14 +20,14 @@ public class TransitionButton : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public int soundId = 401;
 
     void OnEnable() {
-        if (isstart) {
+        if (isStart) {
             transform.localScale = originScale;
         }
     }
 
     void Start() {
         originScale = transform.localScale;
-        isstart = true;
+        isStart = true;
     }
 
     public void OnPointerDown(PointerEventData eventData) {

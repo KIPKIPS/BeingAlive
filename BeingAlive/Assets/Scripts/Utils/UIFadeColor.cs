@@ -46,8 +46,10 @@ public class UIFadeColor : BaseMeshEffect {
             }
         }
         public void AddAllPosToList(ref List<Vector2> list) {
-            if (this.pos_array == null) return;
-            foreach (var pos in this.pos_array) list.Add(pos);
+            if (this.pos_array == null)
+                return;
+            foreach (var pos in this.pos_array)
+                list.Add(pos);
         }
     }
 
@@ -166,8 +168,10 @@ public class UIFadeColor : BaseMeshEffect {
             FadeInfo close_min_info = m_fade_info_list[0];
             FadeInfo close_max_info = m_fade_info_list[fade_info_total_count - 1];
             foreach (var info in m_fade_info_list) {
-                if (info.normalized_dist <= pos_lerp_dist && info.normalized_dist > close_min_info.normalized_dist) close_min_info = info;
-                if (info.normalized_dist >= pos_lerp_dist && info.normalized_dist < close_max_info.normalized_dist) close_max_info = info;
+                if (info.normalized_dist <= pos_lerp_dist && info.normalized_dist > close_min_info.normalized_dist)
+                    close_min_info = info;
+                if (info.normalized_dist >= pos_lerp_dist && info.normalized_dist < close_max_info.normalized_dist)
+                    close_max_info = info;
             }
             float delta_pos_dist = close_max_info.normalized_dist - close_min_info.normalized_dist;
             float lerp_pos_v = delta_pos_dist > 0 ? (pos_lerp_dist - close_min_info.normalized_dist) / delta_pos_dist : 0;

@@ -173,4 +173,7 @@ public class BasePanel : MonoBehaviour {
     public string AddColor(string str, int colorIndex) {
         return Utils.AddColor(str, colorIndex);
     }
+    public static string AddUnderLine(string msg, int colorIndex, int line) {
+        return Utils.AddUnderLine(msg, colorIndex, line);
+    }
 }

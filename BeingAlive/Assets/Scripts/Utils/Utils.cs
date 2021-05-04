@@ -14,14 +14,15 @@ public static class Utils {
     /// <typeparam name="T">目标列表类型</typeparam>
     /// <returns></returns>
     public static T[] ShuffleCoords<T>(T[] list, int seed) {
-        System.Random random = new System.Random(seed);//根据随机种子获得一个随机数
+        System.Random random = new System.Random(seed); //根据随机种子获得一个随机数
         //遍历并随机交换
         for (int i = 0; i < list.Length - 1; i++) {
-            int randomIndex = random.Next(i, list.Length);//返回一个随机的索引
-            T tempItem = list[randomIndex];//swap操作
+            int randomIndex = random.Next(i, list.Length); //返回一个随机的索引
+            T tempItem = list[randomIndex]; //swap操作
             list[randomIndex] = list[i];
             list[i] = tempItem;
         }
+
         return list;
     }
 
@@ -61,6 +62,7 @@ public static class Utils {
         if (childTF != null) {
             return childTF;
         }
+
         //遍历子物体查找
         int count = root.childCount;
         for (int i = 0; i < count; i++) {
@@ -69,8 +71,10 @@ public static class Utils {
                 return childTF;
             }
         }
+
         return null;
     }
+
     //AnalysisJson
     public static T LoadJsonByPath<T>(string path) {
         string filePath = Application.dataPath + "/" + path;
@@ -91,8 +95,14 @@ public static class Utils {
         return string.Format("<color={0}>{1}</color>", GetColor(colorIndex), str);
 
     }
+
     public static string GetColor(int colorIndex) {
         return DataManager.Instance.ColorDict[colorIndex];
         //return string.Format("#{0}", DataColor.data_get[tonumber(color)].color);
+    }
+
+    //color下划线颜色 line 线厚度
+    public static string AddUnderLine(string msg, int colorIndex, int line) {
+        return string.Format("<UnderWave/color={0},thickness=${1}>{2}</UnderWave>", GetColor(colorIndex), line, msg);
     }
 }
